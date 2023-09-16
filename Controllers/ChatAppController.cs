@@ -4,48 +4,59 @@ using Microsoft.AspNetCore.Authorization;
 using ChatApp.Models.DTOs;
 using ChatApp.Features.Commands.Requests;
 using ChatApp.Features.Queries.Requests;
+using ChatApp.Services;
 
 namespace ChatApp.Controllers
 {
     [ApiController]
+    [Authorize]
     [Route("api/chat-app")]
     public class ChatAppController : ControllerBase
     {
         private readonly IMediator _mediator;
+        private readonly UserService _userService;
 
-        public ChatAppController(IMediator mediator)
+        public ChatAppController(IMediator mediator, UserService userService)
         {
             _mediator = mediator;
+            _userService = userService;
         }
 
 
         [HttpPost("message")]
-        public async Task<IActionResult> CreateMessage([FromBody] CreateMessageDto createMessageDto)
+        public async Task<IActionResult> CreateMessage([FromBody] string content)
         {
 
-            var createMessageCommand = new CreateMessageCommand{
-                CreateMessageDto = createMessageDto
+            var currentUserId = _userService.GetUserId();
+
+            var createMessageCommand = new CreateMessageCommand
+            {
+                CreateMessageDto = new CreateMessageDto
+                {
+                    Content = content,
+                    UserId = currentUserId
+                }
             };
 
             var response = await _mediator.Send(createMessageCommand);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 return CreatedAtAction(nameof(GetMessage), new { id = response.Value.Id }, response);
             return BadRequest(response);
         }
 
-        [HttpPost("user")]
-        public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
-        {
+        // [HttpPost("user")]
+        // public async Task<IActionResult> CreateUser([FromBody] CreateUserDto createUserDto)
+        // {
 
-            var createUserCommand = new CreateUserCommand{
-                CreateUserDto = createUserDto
-            };
+        //     var createUserCommand = new CreateUserCommand{
+        //         CreateUserDto = createUserDto
+        //     };
 
-            var response = await _mediator.Send(createUserCommand);
-            if(response.IsSuccess)
-                return CreatedAtAction(nameof(GetUser), new { id = response.Value.Id }, response);
-            return BadRequest(response);
-        }
+        //     var response = await _mediator.Send(createUserCommand);
+        //     if(response.IsSuccess)
+        //         return CreatedAtAction(nameof(GetUser), new { id = response.Value.Id }, response);
+        //     return BadRequest(response);
+        // }
 
         [HttpGet("message")]
         public async Task<IActionResult> GetMessages()
@@ -54,7 +65,7 @@ namespace ChatApp.Controllers
             var getAllMessagesQuery = new GetAllMessagesQuery();
 
             var response = await _mediator.Send(getAllMessagesQuery);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 return Ok(response);
             return BadRequest(response);
         }
@@ -63,12 +74,13 @@ namespace ChatApp.Controllers
         public async Task<IActionResult> GetMessage(int id)
         {
 
-            var getMessageByIdQuery = new GetMessageByIdQuery{
-                MessageId=id
+            var getMessageByIdQuery = new GetMessageByIdQuery
+            {
+                MessageId = id
             };
 
             var response = await _mediator.Send(getMessageByIdQuery);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 return Ok(response);
             return BadRequest(response);
         }
@@ -81,21 +93,23 @@ namespace ChatApp.Controllers
             var getAllUsersQuery = new GetAllUsersQuery();
 
             var response = await _mediator.Send(getAllUsersQuery);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 return Ok(response);
             return BadRequest(response);
         }
 
+        [AllowAnonymous]
         [HttpGet("user/{id}")]
         public async Task<IActionResult> GetUser(int id)
         {
 
-            var getMessageByIdQuery = new GetUserByIdQuery{
-                UserId=id
+            var getMessageByIdQuery = new GetUserByIdQuery
+            {
+                UserId = id
             };
 
             var response = await _mediator.Send(getMessageByIdQuery);
-            if(response.IsSuccess)
+            if (response.IsSuccess)
                 return Ok(response);
             return BadRequest(response);
         }

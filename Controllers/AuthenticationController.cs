@@ -44,23 +44,23 @@ namespace ChatApp.Controllers
 
             var response = await _mediator.Send(createUserCommand);
             if(response.IsSuccess)
-                return CreatedAtAction(nameof(GetUser), new { id = response.Value.Id }, response);
+                return CreatedAtAction("GetUser", "ChatApp", new { id = response.Value.Id }, response);
             return BadRequest(response);
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetUser(int id)
-        {
+        // [HttpGet("{id}")]
+        // public async Task<IActionResult> GetUser(int id)
+        // {
 
-            var getMessageByIdQuery = new GetUserByIdQuery{
-                UserId=id
-            };
+        //     var getMessageByIdQuery = new GetUserByIdQuery{
+        //         UserId=id
+        //     };
 
-            var response = await _mediator.Send(getMessageByIdQuery);
-            if(response.IsSuccess)
-                return Ok(response);
-            return BadRequest(response);
-        }
+        //     var response = await _mediator.Send(getMessageByIdQuery);
+        //     if(response.IsSuccess)
+        //         return Ok(response);
+        //     return BadRequest(response);
+        // }
 
         
 
