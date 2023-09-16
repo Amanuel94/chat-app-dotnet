@@ -1,0 +1,26 @@
+using ChatApp.Models;
+using ChatApp.Models.Data;
+using Microsoft.EntityFrameworkCore;
+
+namespace ChatApp.Data;
+public class MessageRepository
+{
+    private readonly ChatAppDbContext _dbContext;
+    public MessageRepository(ChatAppDbContext dbContext)
+    {
+        _dbContext = dbContext;
+    }
+    public async Task CreateMessage(Message Message){
+        await _dbContext.Messages.AddAsync(Message);
+    }
+
+
+    public async Task<List<Message>> GetAsync(){
+        return await _dbContext.Messages.ToListAsync();
+    }
+
+    public async Task<Message?> GetAsync(int id){
+        return await _dbContext.Messages.FirstOrDefaultAsync(m => m.Id == id);
+    }
+
+}
