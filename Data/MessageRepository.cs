@@ -10,7 +10,7 @@ public class MessageRepository
     {
         _dbContext = dbContext;
     }
-    public async Task CreateMessage(Message Message){
+    public async Task CreateAsync(Message Message){
         await _dbContext.Messages.AddAsync(Message);
     }
 

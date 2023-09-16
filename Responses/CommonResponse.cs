@@ -1,4 +1,6 @@
- namespace ChatApp.Models.Responses;
+using ChatApp.Models.DTOs;
+
+namespace ChatApp.Models.Responses;
  
  public class CommonResponse<T>
     {
@@ -23,4 +25,4 @@
                 Error = error,
                 IsSuccess = false
             };
-    }
+}

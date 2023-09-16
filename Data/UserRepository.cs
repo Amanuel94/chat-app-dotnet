@@ -10,7 +10,7 @@ public class UserRepository
     {
         _dbContext = dbContext;
     }
-    public async Task CreateUser(User user){
+    public async Task CreateAsync(User user){
         await _dbContext.Users.AddAsync(user);
     }
 
