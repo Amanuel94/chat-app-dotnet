@@ -1,4 +1,4 @@
-namespace ChatApp.Models;
+namespace ChatApp.Models.EntityModels;
 
 public class BaseEntity{
     public int Id { get; set;}

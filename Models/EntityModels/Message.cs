@@ -1,5 +1,5 @@
 
-namespace ChatApp.Models;
+namespace ChatApp.Models.EntityModels;
 
 public class Message : BaseEntity{
     public string Content { get; set;} = null!;

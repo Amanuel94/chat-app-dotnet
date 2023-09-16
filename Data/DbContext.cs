@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using ChatApp.Models.EntityModels;
 
 namespace ChatApp.Models.Data
 {

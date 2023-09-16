@@ -1,5 +1,5 @@
 
-namespace ChatApp.Models;
+namespace ChatApp.Models.EntityModels;
 
 public class User:BaseEntity{
     public string UserName { get; set;} = null!;

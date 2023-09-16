@@ -1,4 +1,4 @@
-using ChatApp.Models;
+using ChatApp.Models.EntityModels;
 using ChatApp.Models.Data;
 using Microsoft.EntityFrameworkCore;
 
@@ -22,12 +22,12 @@ public class UserRepository
     public async Task<User?> GetAsync(int id){
         return await _dbContext.Users.FirstOrDefaultAsync(u => u.Id == id);
     }
-    public async Task<bool> EmailExists(string email)
+    public async Task<bool> EmailExistsAsync(string email)
     {
         return await _dbContext.Users.AnyAsync(user => user.Email == email);
     }
 
-    public async Task<bool> UsernameExists(string username)
+    public async Task<bool> UsernameExistsAsync(string username)
     {
         return await _dbContext.Users.AnyAsync(user => user.UserName == username);
     }
