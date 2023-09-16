@@ -1,5 +1,7 @@
+using System.Reflection;
 using ChatApp.Data;
 using ChatApp.Models.Data;
+using MediatR;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -14,6 +16,8 @@ builder.Services.AddDbContext<ChatAppDbContext>(options =>
 builder.Services.AddScoped<UnitOfWork>();
 builder.Services.AddScoped<UserRepository>();
 builder.Services.AddScoped<MessageRepository>();
+builder.Services.AddAutoMapper(Assembly.GetExecutingAssembly());
+builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 
         
