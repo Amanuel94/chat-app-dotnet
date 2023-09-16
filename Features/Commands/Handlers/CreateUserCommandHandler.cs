@@ -5,6 +5,7 @@ using ChatApp.Models.DTOs;
 using ChatApp.Models.DTOs.Validators;
 using ChatApp.Models.EntityModels;
 using ChatApp.Models.Responses;
+using ChatApp.Services;
 using MediatR;
 
 namespace ChatApp.Features.Commands.Handlers;
@@ -14,10 +15,13 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Commo
 
     private readonly UnitOfWork _unitOfWork = null!;
     private readonly IMapper _mapper;
-    public CreateUserCommandHandler(UnitOfWork unitOfWork, IMapper mapper)
+    private readonly PasswordHasher _passwordHasher;
+    public CreateUserCommandHandler(UnitOfWork unitOfWork, IMapper mapper, PasswordHasher passwordHasher)
     {
         _unitOfWork = unitOfWork;
         _mapper = mapper;
+        _passwordHasher = passwordHasher;
+
     }
     public async Task<CommonResponse<UserDto>> Handle(CreateUserCommand request, CancellationToken cancellationToken)
     {
@@ -25,6 +29,7 @@ public class CreateUserCommandHandler : IRequestHandler<CreateUserCommand, Commo
         var validationResult = await validator.ValidateAsync(request.CreateUserDto);
         if (validationResult.IsValid){
             var user = _mapper.Map<User>(request.CreateUserDto);
+            user.Password = _passwordHasher.HashPassword(user.Password);
             await _unitOfWork.UserRepository.CreateAsync(user);
             int changesSaved = await _unitOfWork.SaveAsync();
             if(changesSaved == 0){

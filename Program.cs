@@ -2,6 +2,7 @@ using System.Reflection;
 using System.Text;
 using ChatApp.Data;
 using ChatApp.Models.Data;
+using ChatApp.Services;
 using ChatApp.Services.JwtServices;
 using MediatR;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
@@ -26,6 +27,9 @@ builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 builder.Services.AddScoped<JwtProvider>();
+builder.Services.AddScoped<PasswordHasher>();
+builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
+builder.Services.AddScoped<UserService>();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
