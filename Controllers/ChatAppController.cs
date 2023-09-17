@@ -5,6 +5,7 @@ using ChatApp.Models.DTOs;
 using ChatApp.Features.Commands.Requests;
 using ChatApp.Features.Queries.Requests;
 using ChatApp.Services;
+using Microsoft.AspNetCore.SignalR;
 
 namespace ChatApp.Controllers
 {
@@ -15,11 +16,12 @@ namespace ChatApp.Controllers
     {
         private readonly IMediator _mediator;
         private readonly UserService _userService;
-
-        public ChatAppController(IMediator mediator, UserService userService)
+        private readonly IHubContext<ChatHub> _hubContext;
+        public ChatAppController(IMediator mediator, UserService userService, IHubContext<ChatHub> hubContext)
         {
             _mediator = mediator;
             _userService = userService;
+            _hubContext = hubContext;
         }
 
 

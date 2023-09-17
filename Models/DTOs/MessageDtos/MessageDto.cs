@@ -7,4 +7,11 @@ public class MessageDto
     public string UserId { get; set; }
     public DateTime CreatedAt { get; set; }
     public DateTime ModifiedAt { get; set; }
+
+    public override string ToString()
+{
+    string delimiter = ";";
+    return $"{Id}{delimiter}{Content}{delimiter}{CreatedAt}";
+}
+
 }

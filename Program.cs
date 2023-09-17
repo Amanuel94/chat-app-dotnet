@@ -30,6 +30,7 @@ builder.Services.AddScoped<JwtProvider>();
 builder.Services.AddScoped<PasswordHasher>();
 builder.Services.AddSingleton<IHttpContextAccessor, HttpContextAccessor>();
 builder.Services.AddScoped<UserService>();
+builder.Services.AddSignalR();
 
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
     .AddJwtBearer(options =>
@@ -97,7 +98,7 @@ if (app.Environment.IsDevelopment())
 app.UseHttpsRedirection();
 app.UseAuthentication();
 app.UseAuthorization();
-
 app.MapControllers();
+app.MapHub<ChatHub>("/chat-app");
 
 app.Run();
